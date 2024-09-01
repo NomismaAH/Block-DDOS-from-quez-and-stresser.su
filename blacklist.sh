@@ -21,3 +21,9 @@ done
 
 # Save the rules
 sudo iptables-save > /etc/iptables/rules.v4
+
+# Edit crontab
+crontab -e
+
+# Add the following line to run the script every hour
+0 * * * * /path/to/blacklist.sh
