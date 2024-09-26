@@ -19,6 +19,7 @@ do
         sudo iptables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
         sudo iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
         sudo iptables -t mangle -A PREROUTING -p tcp -m conntrack --ctstate NEW -m tcpmss ! --mss 536:65535 -j DROP
+        sudo iptables -A INPUT -p udp --dport 123 -m limit --limit 10/sec --limit-burst 20 -j ACCEPT
 
     done
 done
