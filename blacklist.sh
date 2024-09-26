@@ -15,7 +15,11 @@ do
     do
         echo "Blocking IP: $IP"
         sudo iptables -A INPUT -s $IP -j DROP
-        sudo iptables -A OUTPUT -d $IP -j DROP
+        sudo iptables -A OUTPUT -d $IP -j DROP 
+        sudo iptables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
+        sudo iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+        sudo iptables -t mangle -A PREROUTING -p tcp -m conntrack --ctstate NEW -m tcpmss ! --mss 536:65535 -j DROP
+
     done
 done
 
