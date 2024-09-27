@@ -46,7 +46,12 @@ sudo iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 # Rate limit incoming traffic to 50 packets per second
 sudo iptables -A INPUT -m limit --limit 50/s --limit-burst 100 -j ACCEPT
 sudo iptables -A INPUT -j DROP
-
+sudo apt update
+sudo apt install arptables
+sudo arptables -A INPUT --opcode 2 -j DROP
+sudo sed -i -e '$i \arptables-restore < /etc/arptables.rules\n' /etc/rc.local
+sudo chmod +x /etc/rc.local
+sudo sh -c "arptables-save > /etc/arptables.rules"
 sudo iptables-save > /etc/iptables/rules.v4
 
 # Edit crontab
